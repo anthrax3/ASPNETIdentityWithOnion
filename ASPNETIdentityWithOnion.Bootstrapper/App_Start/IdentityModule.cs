@@ -8,6 +8,7 @@ using Autofac;
 using Autofac.Integration.Mvc;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
+using ASPNETIdentityWithOnion.Core.Data;
 
 namespace ASPNETIdentityWithOnion.Bootstrapper
 {
@@ -17,15 +18,16 @@ namespace ASPNETIdentityWithOnion.Bootstrapper
         {
             builder.RegisterType(typeof(ApplicationUserManager)).As(typeof(IApplicationUserManager)).InstancePerHttpRequest();
             builder.RegisterType(typeof(ApplicationRoleManager)).As(typeof(IApplicationRoleManager)).InstancePerHttpRequest();
-            builder.RegisterType(typeof(ApplicationIdentityUser)).As(typeof(IUser<int>)).InstancePerHttpRequest();
-            builder.Register(b => b.Resolve<IEntitiesContext>() as DbContext).InstancePerHttpRequest();
+            builder.RegisterType(typeof(ApplicationIdentityUser)).As(typeof(IUser<string>)).InstancePerHttpRequest();
+            builder.RegisterType(typeof(AspnetIdentityWithOnionContext)).As(typeof(IDbContext)).InstancePerHttpRequest();
+            builder.Register(b => b.Resolve<IDbContext>() as DbContext).InstancePerHttpRequest();
             builder.Register(b =>
             {
                 var manager = IdentityFactory.CreateUserManager(b.Resolve<DbContext>());
                 if (Startup.DataProtectionProvider != null)
                 {
                     manager.UserTokenProvider =
-                        new DataProtectorTokenProvider<ApplicationIdentityUser, int>(
+                        new DataProtectorTokenProvider<ApplicationIdentityUser>(
                             Startup.DataProtectionProvider.Create("ASP.NET Identity"));
                 }
                 return manager;

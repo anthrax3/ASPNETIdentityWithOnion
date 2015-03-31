@@ -24,7 +24,7 @@ namespace ASPNETIdentityWithOnion.Data
         public void InitializeIdentityForEF(AspnetIdentityWithOnionContext db)
         {
             // This is only for testing purpose
-            const string name = "admin@admin.com";
+            const string name = "admin@example.com";
             const string password = "Admin@123456";
             const string roleName = "Admin";
             var applicationRoleManager = IdentityFactory.CreateRoleManager(db);
@@ -33,7 +33,7 @@ namespace ASPNETIdentityWithOnion.Data
             var role = applicationRoleManager.FindByName(roleName);
             if (role == null)
             {
-                role = new ApplicationIdentityRole{Name= roleName};
+                role = new ApplicationIdentityRole(roleName);
                 applicationRoleManager.Create(role);
             }
 
@@ -51,7 +51,35 @@ namespace ASPNETIdentityWithOnion.Data
             {
                 applicationUserManager.AddToRole(user.Id, role.Name);
             }
-            var context = new AspnetIdentityWithOnionContext("name=AppContext",new DebugLogger());
+            
+            //### Developer Role and credentials
+            const string name2 = "developer@example.com";
+            const string password2 = "Developer@123456";
+            const string roleName2 = "Developer";
+            //Create Role Admin if it does not exist
+            var role2 = applicationRoleManager.FindByName(roleName2);
+            if (role2 == null)
+            {
+                role2 = new ApplicationIdentityRole(roleName2);
+                applicationRoleManager.Create(role2);
+            }
+
+            var user2 = applicationUserManager.FindByName(name2);
+            if (user2 == null)
+            {
+                user2 = new ApplicationIdentityUser { UserName = name2, Email = name2 };
+                applicationUserManager.Create(user2, password2);
+                applicationUserManager.SetLockoutEnabled(user2.Id, false);
+            }
+
+            // Add user admin to Role Admin if not already added
+            var rolesForUser2 = applicationUserManager.GetRoles(user.Id);
+            if (!rolesForUser2.Contains(role2.Name))
+            {
+                applicationUserManager.AddToRole(user2.Id, role2.Name);
+            }
+
+            var context = new AspnetIdentityWithOnionContext();
             var image = new Image {Path = "http://lorempixel.com/400/200/"};
             context.Set<Image>().Add(image);
             for (var i = 0; i < 100; i++)

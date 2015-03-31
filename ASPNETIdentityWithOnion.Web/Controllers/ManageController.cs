@@ -1,6 +1,6 @@
 ﻿using ASPNETIdentityWithOnion.Core.DomainModels.Identity;
 using ASPNETIdentityWithOnion.Core.Identity;
-using ASPNETIdentityWithOnion.Web.Models;
+using ASPNETIdentityWithOnion.Web.ViewModels;
 using ASPNETIdentityWithOnion.Web.Extensions;
 using System.Linq;
 using System.Threading.Tasks;
@@ -17,12 +17,11 @@ namespace ASPNETIdentityWithOnion.Web.Controllers
             _userManager = userManager;
         }
 
-        public int UserId
+        public string UserId
         {
             get
             {
-                var userId = User.Identity.GetUserId();
-                return userId != null ? userId.Value : 0;
+                return User.Identity.GetUserId();
             }
         }
 

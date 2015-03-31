@@ -17,10 +17,10 @@ namespace ASPNETIdentityWithOnion.Data.Identity
 
     public class ApplicationUserManager : IApplicationUserManager
     {
-        private readonly UserManager<ApplicationIdentityUser, int> _userManager;
+        private readonly UserManager<ApplicationIdentityUser, string> _userManager;
         private readonly IAuthenticationManager _authenticationManager;
         private bool _disposed;
-        public ApplicationUserManager(UserManager<ApplicationIdentityUser, int> userManager, IAuthenticationManager authenticationManager)
+        public ApplicationUserManager(UserManager<ApplicationIdentityUser, string> userManager, IAuthenticationManager authenticationManager)
         {
             _userManager = userManager;
             _authenticationManager = authenticationManager;
@@ -66,43 +66,43 @@ namespace ASPNETIdentityWithOnion.Data.Identity
             }
         }
 
-        public virtual async Task<ApplicationIdentityResult> AccessFailedAsync(int userId)
+        public virtual async Task<ApplicationIdentityResult> AccessFailedAsync(string userId)
         {
             var identityResult = await _userManager.AccessFailedAsync(userId).ConfigureAwait(false);
             return identityResult.ToApplicationIdentityResult();
         }
 
-        public virtual async Task<ApplicationIdentityResult> AddClaimAsync(int userId, Claim claim)
+        public virtual async Task<ApplicationIdentityResult> AddClaimAsync(string userId, Claim claim)
         {
             var identityResult = await _userManager.AddClaimAsync(userId, claim).ConfigureAwait(false);
             return identityResult.ToApplicationIdentityResult();
         }
 
-        public virtual async Task<ApplicationIdentityResult> AddLoginAsync(int userId, ApplicationUserLoginInfo login)
+        public virtual async Task<ApplicationIdentityResult> AddLoginAsync(string userId, ApplicationUserLoginInfo login)
         {
             var identityResult = await _userManager.AddLoginAsync(userId, login.ToUserLoginInfo()).ConfigureAwait(false);
             return identityResult.ToApplicationIdentityResult();
         }
 
-        public virtual async Task<ApplicationIdentityResult> AddPasswordAsync(int userId, string password)
+        public virtual async Task<ApplicationIdentityResult> AddPasswordAsync(string userId, string password)
         {
             var identityResult = await _userManager.AddPasswordAsync(userId, password).ConfigureAwait(false);
             return identityResult.ToApplicationIdentityResult();
         }
 
-        public virtual async Task<ApplicationIdentityResult> AddToRoleAsync(int userId, string role)
+        public virtual async Task<ApplicationIdentityResult> AddToRoleAsync(string userId, string role)
         {
             var identityResult = await _userManager.AddToRoleAsync(userId, role).ConfigureAwait(false);
             return identityResult.ToApplicationIdentityResult();
         }
 
-        public virtual ApplicationIdentityResult AddToRole(int userId, string role)
+        public virtual ApplicationIdentityResult AddToRole(string userId, string role)
         {
             var identityResult = _userManager.AddToRole(userId, role);
             return identityResult.ToApplicationIdentityResult();
         }
 
-        public virtual async Task<ApplicationIdentityResult> AddUserToRolesAsync(int userId, IList<string> roles)
+        public virtual async Task<ApplicationIdentityResult> AddUserToRolesAsync(string userId, IList<string> roles)
         {
             var user = await FindByIdAsync(userId).ConfigureAwait(false);
             if (user == null)
@@ -121,19 +121,19 @@ namespace ASPNETIdentityWithOnion.Data.Identity
             return await UpdateAsync(userId).ConfigureAwait(false);
         }
 
-        public virtual async Task<ApplicationIdentityResult> ChangePasswordAsync(int userId, string currentPassword, string newPassword)
+        public virtual async Task<ApplicationIdentityResult> ChangePasswordAsync(string userId, string currentPassword, string newPassword)
         {
             var identityResult = await _userManager.ChangePasswordAsync(userId, currentPassword, newPassword).ConfigureAwait(false);
             return identityResult.ToApplicationIdentityResult();
         }
 
-        public virtual async Task<ApplicationIdentityResult> ChangePhoneNumberAsync(int userId, string phoneNumber, string token)
+        public virtual async Task<ApplicationIdentityResult> ChangePhoneNumberAsync(string userId, string phoneNumber, string token)
         {
             var identityResult = await _userManager.ChangePhoneNumberAsync(userId, phoneNumber, token).ConfigureAwait(false);
             return identityResult.ToApplicationIdentityResult();
         }
 
-        public virtual void Challenge(string redirectUri, string xsrfKey, int? userId, params string[] authenticationTypes)
+        public virtual void Challenge(string redirectUri, string xsrfKey, string userId, params string[] authenticationTypes)
         {
             var properties = new AuthenticationProperties { RedirectUri = redirectUri };
             if (userId != null)
@@ -151,7 +151,7 @@ namespace ASPNETIdentityWithOnion.Data.Identity
             return flag;
         }
 
-        public virtual async Task<ApplicationIdentityResult> ConfirmEmailAsync(int userId,  string token)
+        public virtual async Task<ApplicationIdentityResult> ConfirmEmailAsync(string userId,  string token)
         {
             var identityResult = await _userManager.ConfirmEmailAsync(userId, token).ConfigureAwait(false);
             return identityResult.ToApplicationIdentityResult();
@@ -205,12 +205,12 @@ namespace ASPNETIdentityWithOnion.Data.Identity
             return identityResult.ToApplicationIdentityResult();
         }
 
-        public virtual ClaimsIdentity CreateTwoFactorRememberBrowserIdentity(int userId)
+        public virtual ClaimsIdentity CreateTwoFactorRememberBrowserIdentity(string userId)
         {
             return _authenticationManager.CreateTwoFactorRememberBrowserIdentity(userId.ToString());
         }
 
-        public virtual async Task<ApplicationIdentityResult> DeleteAsync(int userId)
+        public virtual async Task<ApplicationIdentityResult> DeleteAsync(string userId)
         {
             var applicationUser = await _userManager.FindByIdAsync(userId);
             if (applicationUser == null)
@@ -253,12 +253,12 @@ namespace ASPNETIdentityWithOnion.Data.Identity
             return user.ToAppUser();
         }
 
-        public virtual AppUser FindById(int userId)
+        public virtual AppUser FindById(string userId)
         {
             return _userManager.FindById(userId).ToAppUser();
         }
 
-        public virtual async Task<AppUser> FindByIdAsync(int userId)
+        public virtual async Task<AppUser> FindByIdAsync(string userId)
         {
             var user = await _userManager.FindByIdAsync(userId).ConfigureAwait(false);
             return user.ToAppUser();
@@ -276,42 +276,42 @@ namespace ASPNETIdentityWithOnion.Data.Identity
             return user.ToAppUser();
         }
 
-        public virtual async Task<string> GenerateChangePhoneNumberTokenAsync(int userId, string phoneNumber)
+        public virtual async Task<string> GenerateChangePhoneNumberTokenAsync(string userId, string phoneNumber)
         {
              return await _userManager.GenerateChangePhoneNumberTokenAsync(userId, phoneNumber).ConfigureAwait(false);
         }
 
-        public virtual async Task<string> GenerateEmailConfirmationTokenAsync(int userId)
+        public virtual async Task<string> GenerateEmailConfirmationTokenAsync(string userId)
         {
             return await _userManager.GenerateEmailConfirmationTokenAsync(userId).ConfigureAwait(false);
         }
 
-        public virtual async Task<string> GeneratePasswordResetTokenAsync(int userId)
+        public virtual async Task<string> GeneratePasswordResetTokenAsync(string userId)
         {
             return await _userManager.GeneratePasswordResetTokenAsync(userId).ConfigureAwait(false);
         }
 
-        public virtual async Task<string> GenerateTwoFactorTokenAsync(int userId, string twoFactorProvider)
+        public virtual async Task<string> GenerateTwoFactorTokenAsync(string userId, string twoFactorProvider)
         {
             return await _userManager.GenerateTwoFactorTokenAsync(userId, twoFactorProvider).ConfigureAwait(false);
         }
 
-        public virtual async Task<string> GenerateUserTokenAsync(string purpose, int userId)
+        public virtual async Task<string> GenerateUserTokenAsync(string purpose, string userId)
         {
             return await _userManager.GenerateUserTokenAsync(purpose, userId).ConfigureAwait(false);
         }
 
-        public virtual async Task<int> GetAccessFailedCountAsync(int userId)
+        public virtual async Task<int> GetAccessFailedCountAsync(string userId)
         {
             return await _userManager.GetAccessFailedCountAsync(userId).ConfigureAwait(false);
         }
 
-        public virtual async Task<IList<Claim>> GetClaimsAsync(int userId)
+        public virtual async Task<IList<Claim>> GetClaimsAsync(string userId)
         {
             return await _userManager.GetClaimsAsync(userId).ConfigureAwait(false);
         }
 
-        public virtual async Task<string> GetEmailAsync(int userId)
+        public virtual async Task<string> GetEmailAsync(string userId)
         {
             return await _userManager.GetEmailAsync(userId).ConfigureAwait(false);
         }
@@ -348,63 +348,63 @@ namespace ASPNETIdentityWithOnion.Data.Identity
             return externalLoginInfo.ToApplicationExternalLoginInfo();
         }
 
-        public virtual async Task<bool> GetLockoutEnabledAsync(int userId)
+        public virtual async Task<bool> GetLockoutEnabledAsync(string userId)
         {
             return await _userManager.GetLockoutEnabledAsync(userId).ConfigureAwait(false);
         }
 
-        public virtual async Task<DateTimeOffset> GetLockoutEndDateAsync(int userId)
+        public virtual async Task<DateTimeOffset> GetLockoutEndDateAsync(string userId)
         {
             return await _userManager.GetLockoutEndDateAsync(userId).ConfigureAwait(false);
         }
 
-        public virtual IList<ApplicationUserLoginInfo> GetLogins(int userId)
+        public virtual IList<ApplicationUserLoginInfo> GetLogins(string userId)
         {
             return _userManager.GetLogins(userId).ToApplicationUserLoginInfoList();
         }
 
-        public virtual async Task<IList<ApplicationUserLoginInfo>> GetLoginsAsync(int userId)
+        public virtual async Task<IList<ApplicationUserLoginInfo>> GetLoginsAsync(string userId)
         {
             var list = await _userManager.GetLoginsAsync(userId).ConfigureAwait(false);
             return list.ToApplicationUserLoginInfoList();
         }
 
-        public virtual async Task<string> GetPhoneNumberAsync(int userId)
+        public virtual async Task<string> GetPhoneNumberAsync(string userId)
         {
             return await _userManager.GetPhoneNumberAsync(userId).ConfigureAwait(false);
         }
 
-        public virtual IList<string> GetRoles(int userId)
+        public virtual IList<string> GetRoles(string userId)
         {
             return _userManager.GetRoles(userId);
         }
 
-        public virtual async Task<IList<string>> GetRolesAsync(int userId)
+        public virtual async Task<IList<string>> GetRolesAsync(string userId)
         {
              return await _userManager.GetRolesAsync(userId).ConfigureAwait(false);
         }
 
-        public virtual async Task<string> GetSecurityStampAsync(int userId)
+        public virtual async Task<string> GetSecurityStampAsync(string userId)
         {
             return await _userManager.GetSecurityStampAsync(userId).ConfigureAwait(false);
         }
 
-        public virtual async Task<bool> GetTwoFactorEnabledAsync(int userId)
+        public virtual async Task<bool> GetTwoFactorEnabledAsync(string userId)
         {
             return await _userManager.GetTwoFactorEnabledAsync(userId).ConfigureAwait(false);
         }
 
-        public virtual async Task<IList<string>> GetValidTwoFactorProvidersAsync(int userId)
+        public virtual async Task<IList<string>> GetValidTwoFactorProvidersAsync(string userId)
         {
             return await _userManager.GetValidTwoFactorProvidersAsync(userId).ConfigureAwait(false);
         }
 
-        public virtual async Task<int?> GetVerifiedUserIdAsync()
+        public virtual async Task<string> GetVerifiedUserIdAsync()
         {
             var result = await _authenticationManager.AuthenticateAsync(DefaultAuthenticationTypes.TwoFactorCookie).ConfigureAwait(false);
-            if (result != null && result.Identity != null && !String.IsNullOrEmpty(result.Identity.GetUserId()))
+            if (result != null && result.Identity != null)
             {
-                return int.Parse(result.Identity.GetUserId());
+                return result.Identity.GetUserId();
             }
             return null;
         }
@@ -414,32 +414,32 @@ namespace ASPNETIdentityWithOnion.Data.Identity
             return await GetVerifiedUserIdAsync().ConfigureAwait(false) != null;
         }
 
-        public virtual async Task<bool> HasPasswordAsync(int userId)
+        public virtual async Task<bool> HasPasswordAsync(string userId)
         {
             return await _userManager.HasPasswordAsync(userId).ConfigureAwait(false);
         }
 
-        public virtual async Task<bool> IsEmailConfirmedAsync(int userId)
+        public virtual async Task<bool> IsEmailConfirmedAsync(string userId)
         {
             return await _userManager.IsEmailConfirmedAsync(userId).ConfigureAwait(false);
         }
 
-        public virtual async Task<bool> IsInRoleAsync(int userId, string role)
+        public virtual async Task<bool> IsInRoleAsync(string userId, string role)
         {
             return await _userManager.IsInRoleAsync(userId,role).ConfigureAwait(false);
         }
 
-        public virtual async Task<bool> IsLockedOutAsync(int userId)
+        public virtual async Task<bool> IsLockedOutAsync(string userId)
         {
             return await _userManager.IsLockedOutAsync(userId).ConfigureAwait(false);
         }
 
-        public virtual async Task<bool> IsPhoneNumberConfirmedAsync(int userId)
+        public virtual async Task<bool> IsPhoneNumberConfirmedAsync(string userId)
         {
             return await _userManager.IsPhoneNumberConfirmedAsync(userId).ConfigureAwait(false);
         }
 
-        public virtual async Task<ApplicationIdentityResult> NotifyTwoFactorTokenAsync(int userId, string twoFactorProvider, string token)
+        public virtual async Task<ApplicationIdentityResult> NotifyTwoFactorTokenAsync(string userId, string twoFactorProvider, string token)
         {
             var identityResult = await _userManager.NotifyTwoFactorTokenAsync(userId, twoFactorProvider, token).ConfigureAwait(false);
             return identityResult.ToApplicationIdentityResult();
@@ -472,32 +472,32 @@ namespace ASPNETIdentityWithOnion.Data.Identity
             return SignInStatus.Failure;
         }
 
-        public virtual async Task<ApplicationIdentityResult> RemoveClaimAsync(int userId, Claim claim)
+        public virtual async Task<ApplicationIdentityResult> RemoveClaimAsync(string userId, Claim claim)
         {
             var identityResult = await _userManager.RemoveClaimAsync(userId, claim).ConfigureAwait(false);
             return identityResult.ToApplicationIdentityResult();
         }
 
-        public virtual async Task<ApplicationIdentityResult> RemoveFromRoleAsync(int userId, string role)
+        public virtual async Task<ApplicationIdentityResult> RemoveFromRoleAsync(string userId, string role)
         {
             var identityResult = await _userManager.RemoveFromRoleAsync(userId, role).ConfigureAwait(false);
             return identityResult.ToApplicationIdentityResult();
         }
 
-        public virtual async Task<ApplicationIdentityResult> RemoveLoginAsync(int userId,
+        public virtual async Task<ApplicationIdentityResult> RemoveLoginAsync(string userId,
             ApplicationUserLoginInfo login)
         {
             var identityResult = await _userManager.RemoveLoginAsync(userId, login.ToUserLoginInfo()).ConfigureAwait(false);
             return identityResult.ToApplicationIdentityResult();
         }
 
-        public virtual async Task<ApplicationIdentityResult> RemovePasswordAsync(int userId)
+        public virtual async Task<ApplicationIdentityResult> RemovePasswordAsync(string userId)
         {
             var identityResult = await _userManager.RemovePasswordAsync(userId).ConfigureAwait(false);
             return identityResult.ToApplicationIdentityResult();
         }
 
-        public virtual async Task<ApplicationIdentityResult> RemoveUserFromRolesAsync(int userId, IList<string> roles)
+        public virtual async Task<ApplicationIdentityResult> RemoveUserFromRolesAsync(string userId, IList<string> roles)
         {
             var user = await FindByIdAsync(userId).ConfigureAwait(false);
             if (user == null)
@@ -516,25 +516,25 @@ namespace ASPNETIdentityWithOnion.Data.Identity
             return await UpdateAsync(user.Id).ConfigureAwait(false);
         }
 
-        public virtual async Task<ApplicationIdentityResult> ResetAccessFailedCountAsync(int userId)
+        public virtual async Task<ApplicationIdentityResult> ResetAccessFailedCountAsync(string userId)
         {
             var identityResult = await _userManager.ResetAccessFailedCountAsync(userId).ConfigureAwait(false);
             return identityResult.ToApplicationIdentityResult();
         }
 
-        public virtual async Task<ApplicationIdentityResult> ResetPasswordAsync(int userId, string token,
+        public virtual async Task<ApplicationIdentityResult> ResetPasswordAsync(string userId, string token,
             string newPassword)
         {
             var identityResult = await _userManager.ResetPasswordAsync(userId, token, newPassword).ConfigureAwait(false);
             return identityResult.ToApplicationIdentityResult();
         }
 
-        public virtual async Task SendEmailAsync(int userId, string subject, string body)
+        public virtual async Task SendEmailAsync(string userId, string subject, string body)
         {
             await _userManager.SendEmailAsync(userId, subject, body).ConfigureAwait(false);
         }
 
-        public virtual async Task SendSmsAsync(int userId, string message)
+        public virtual async Task SendSmsAsync(string userId, string message)
         {
             await _userManager.SendSmsAsync(userId, message).ConfigureAwait(false);
         }
@@ -555,43 +555,43 @@ namespace ASPNETIdentityWithOnion.Data.Identity
                 return false;
             }
 
-            var token = await GenerateTwoFactorTokenAsync(userId.Value, provider).ConfigureAwait(false);
-            await NotifyTwoFactorTokenAsync(userId.Value, provider, token).ConfigureAwait(false);
+            var token = await GenerateTwoFactorTokenAsync(userId, provider).ConfigureAwait(false);
+            await NotifyTwoFactorTokenAsync(userId, provider, token).ConfigureAwait(false);
             return true;
         }
 
-        public virtual async Task<ApplicationIdentityResult> SetEmailAsync(int userId, string email)
+        public virtual async Task<ApplicationIdentityResult> SetEmailAsync(string userId, string email)
         {
             var identityResult = await _userManager.SetEmailAsync(userId, email).ConfigureAwait(false);
             return identityResult.ToApplicationIdentityResult();
         }
 
-        public virtual ApplicationIdentityResult SetLockoutEnabled(int userId, bool enabled)
+        public virtual ApplicationIdentityResult SetLockoutEnabled(string userId, bool enabled)
         {
             var identityResult = _userManager.SetLockoutEnabled(userId, enabled);
             return identityResult.ToApplicationIdentityResult();
         }
 
-        public virtual async Task<ApplicationIdentityResult> SetLockoutEnabledAsync(int userId, bool enabled)
+        public virtual async Task<ApplicationIdentityResult> SetLockoutEnabledAsync(string userId, bool enabled)
         {
             var identityResult = await _userManager.SetLockoutEnabledAsync(userId, enabled).ConfigureAwait(false);
             return identityResult.ToApplicationIdentityResult();
         }
 
-        public virtual async Task<ApplicationIdentityResult> SetLockoutEndDateAsync(int userId,
+        public virtual async Task<ApplicationIdentityResult> SetLockoutEndDateAsync(string userId,
             DateTimeOffset lockoutEnd)
         {
             var identityResult = await _userManager.SetLockoutEndDateAsync(userId, lockoutEnd).ConfigureAwait(false);
             return identityResult.ToApplicationIdentityResult();
         }
 
-        public virtual async Task<ApplicationIdentityResult> SetPhoneNumberAsync(int userId, string phoneNumber)
+        public virtual async Task<ApplicationIdentityResult> SetPhoneNumberAsync(string userId, string phoneNumber)
         {
             var identityResult = await _userManager.SetPhoneNumberAsync(userId, phoneNumber).ConfigureAwait(false);
             return identityResult.ToApplicationIdentityResult();
         }
 
-        public virtual async Task<ApplicationIdentityResult> SetTwoFactorEnabledAsync(int userId, bool enabled)
+        public virtual async Task<ApplicationIdentityResult> SetTwoFactorEnabledAsync(string userId, bool enabled)
         {
             var identityResult = await _userManager.SetTwoFactorEnabledAsync(userId, enabled).ConfigureAwait(false);
             return identityResult.ToApplicationIdentityResult();
@@ -659,7 +659,7 @@ namespace ASPNETIdentityWithOnion.Data.Identity
             _authenticationManager.SignOut(authenticationTypes);
         }
 
-        public virtual async Task<bool> TwoFactorBrowserRememberedAsync(int userId)
+        public virtual async Task<bool> TwoFactorBrowserRememberedAsync(string userId)
         {
             return await _authenticationManager.TwoFactorBrowserRememberedAsync(userId.ToString()).ConfigureAwait(false);
         }
@@ -671,7 +671,7 @@ namespace ASPNETIdentityWithOnion.Data.Identity
             {
                 return SignInStatus.Failure;
             }
-            var user = await FindByIdAsync(userId.Value).ConfigureAwait(false);
+            var user = await FindByIdAsync(userId).ConfigureAwait(false);
             if (user == null)
             {
                 return SignInStatus.Failure;
@@ -692,7 +692,7 @@ namespace ASPNETIdentityWithOnion.Data.Identity
             return SignInStatus.Failure;
         }
 
-        public virtual async Task<ApplicationIdentityResult> UpdateAsync(int userId)
+        public virtual async Task<ApplicationIdentityResult> UpdateAsync(string userId)
         {
             var applicationUser = await _userManager.FindByIdAsync(userId).ConfigureAwait(false);
             if (applicationUser == null)
@@ -703,7 +703,7 @@ namespace ASPNETIdentityWithOnion.Data.Identity
             return identityResult.ToApplicationIdentityResult();
         }
 
-        public virtual async Task<ApplicationIdentityResult> UpdateSecurityStampAsync(int userId)
+        public virtual async Task<ApplicationIdentityResult> UpdateSecurityStampAsync(string userId)
         {
             var identityResult = await _userManager.UpdateSecurityStampAsync(userId).ConfigureAwait(false);
             return identityResult.ToApplicationIdentityResult();
@@ -720,18 +720,18 @@ namespace ASPNETIdentityWithOnion.Data.Identity
             return users.ToAppUserList();
         }
 
-        public virtual async Task<bool> VerifyChangePhoneNumberTokenAsync(int userId, string token,
+        public virtual async Task<bool> VerifyChangePhoneNumberTokenAsync(string userId, string token,
             string phoneNumber)
         {
             return await _userManager.VerifyChangePhoneNumberTokenAsync(userId, token, phoneNumber).ConfigureAwait(false);
         }
 
-        public virtual async Task<bool> VerifyTwoFactorTokenAsync(int userId, string twoFactorProvider, string token)
+        public virtual async Task<bool> VerifyTwoFactorTokenAsync(string userId, string twoFactorProvider, string token)
         {
             return await _userManager.VerifyTwoFactorTokenAsync(userId, twoFactorProvider, token).ConfigureAwait(false);
         }
 
-        public virtual async Task<bool> VerifyUserTokenAsync(int userId, string purpose, string token)
+        public virtual async Task<bool> VerifyUserTokenAsync(string userId, string purpose, string token)
         {
             return await _userManager.VerifyUserTokenAsync(userId, purpose, token).ConfigureAwait(false);
         }

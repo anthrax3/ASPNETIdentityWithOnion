@@ -1,4 +1,4 @@
-﻿using ASPNETIdentityWithOnion.Web.Models;
+﻿using ASPNETIdentityWithOnion.Web.ViewModels;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Mvc;
@@ -67,7 +67,7 @@ namespace ASPNETIdentityWithOnion.Web.Controllers
                 return View("Error");
             }
             var id = await _userManager.GetVerifiedUserIdAsync();
-            var user = await _userManager.FindByIdAsync(id.Value);
+            var user = await _userManager.FindByIdAsync(id);
             if (user != null)
             {
                 // To exercise the flow without actually sending codes, uncomment the following line
@@ -138,13 +138,13 @@ namespace ASPNETIdentityWithOnion.Web.Controllers
         //
         // GET: /Account/ConfirmEmail
         [AllowAnonymous]
-        public async Task<ActionResult> ConfirmEmail(int? userId, string code)
+        public async Task<ActionResult> ConfirmEmail(string userId, string code)
         {
             if (userId == null || code == null)
             {
                 return View("Error");
             }
-            var result = await _userManager.ConfirmEmailAsync(userId.Value, code);
+            var result = await _userManager.ConfirmEmailAsync(userId, code);
             if (result.Succeeded)
             {
                 return View("ConfirmEmail");
@@ -259,7 +259,7 @@ namespace ASPNETIdentityWithOnion.Web.Controllers
             {
                 return View("Error");
             }
-            var userFactors = await _userManager.GetValidTwoFactorProvidersAsync(userId.Value);
+            var userFactors = await _userManager.GetValidTwoFactorProvidersAsync(userId);
             var factorOptions = userFactors.Select(purpose => new SelectListItem { Text = purpose, Value = purpose }).ToList();
             return View(new SendCodeViewModel { Providers = factorOptions, ReturnUrl = returnUrl });
         }
@@ -407,7 +407,7 @@ namespace ASPNETIdentityWithOnion.Web.Controllers
             {
             }
 
-            public ChallengeResult(string provider, string redirectUri, int? userId, IApplicationUserManager userManager)
+            public ChallengeResult(string provider, string redirectUri, string userId, IApplicationUserManager userManager)
             {
                 LoginProvider = provider;
                 RedirectUri = redirectUri;
@@ -417,7 +417,7 @@ namespace ASPNETIdentityWithOnion.Web.Controllers
 
             public string LoginProvider { get; set; }
             public string RedirectUri { get; set; }
-            public int? UserId { get; set; }
+            public string UserId { get; set; }
             public IApplicationUserManager UserManager { get; set; }
 
             public override void ExecuteResult(ControllerContext context)

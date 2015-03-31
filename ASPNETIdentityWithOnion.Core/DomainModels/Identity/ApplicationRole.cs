@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace ASPNETIdentityWithOnion.Core.DomainModels.Identity
 {
@@ -7,9 +8,10 @@ namespace ASPNETIdentityWithOnion.Core.DomainModels.Identity
         public ApplicationRole()
         {
             Users = new List<ApplicationUserRole>();
+            Id = Guid.NewGuid().ToString();
         }
 
-        public int Id
+        public string Id
         {
             get; set;
         }

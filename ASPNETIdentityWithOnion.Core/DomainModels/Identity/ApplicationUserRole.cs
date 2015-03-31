@@ -2,7 +2,7 @@
 {
     public class ApplicationUserRole
     {
-        public virtual int RoleId { get; set; }
-        public virtual int UserId { get; set; }
+        public virtual string RoleId { get; set; }
+        public virtual string UserId { get; set; }
     }
 }

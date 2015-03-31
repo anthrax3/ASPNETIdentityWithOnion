@@ -9,22 +9,22 @@ namespace ASPNETIdentityWithOnion.Data
     {
         public static void ConfigureEf(DbModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Product>()
-                .Property(e => e.Id)
-                .HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
-            modelBuilder.Entity<Image>()
-                .Property(e => e.Id)
-                .HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
-            modelBuilder.Entity<Image>()
-                .HasMany(e => e.Products)
-                .WithRequired(e => e.Image)
-                .WillCascadeOnDelete(false);
+            //modelBuilder.Entity<Product>()
+            //    .Property(e => e.Id)
+            //    .HasDatabaseGeneratedOption(DatabaseGeneratedOption.None);
+            //modelBuilder.Entity<Image>()
+            //    .Property(e => e.Id)
+            //    .HasDatabaseGeneratedOption(DatabaseGeneratedOption.None);
+            //modelBuilder.Entity<Image>()
+            //    .HasMany(e => e.Products)
+            //    .WithRequired(e => e.Image)
+            //    .WillCascadeOnDelete(false);
             modelBuilder.Entity<ApplicationIdentityUser>()
                  .Property(e => e.Id)
-                 .HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
+                 .HasDatabaseGeneratedOption(DatabaseGeneratedOption.None);
             modelBuilder.Entity<ApplicationIdentityRole>()
                 .Property(e => e.Id)
-                .HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
+                .HasDatabaseGeneratedOption(DatabaseGeneratedOption.None);
             modelBuilder.Entity<ApplicationIdentityUserClaim>()
                  .Property(e => e.Id)
                  .HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);

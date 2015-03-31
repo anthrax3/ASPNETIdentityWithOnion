@@ -14,10 +14,10 @@ namespace ASPNETIdentityWithOnion.Data.Identity
     // Configure the RoleManager used in the application. RoleManager is defined in the ASP.NET Identity core assembly
     public class ApplicationRoleManager : IApplicationRoleManager
     {
-        private readonly RoleManager<ApplicationIdentityRole, int> _roleManager;
+        private readonly RoleManager<ApplicationIdentityRole, string> _roleManager;
         private bool _disposed;
 
-        public ApplicationRoleManager(RoleManager<ApplicationIdentityRole, int> roleManager)
+        public ApplicationRoleManager(RoleManager<ApplicationIdentityRole, string> roleManager)
         {
             _roleManager = roleManager;
         }
@@ -38,7 +38,7 @@ namespace ASPNETIdentityWithOnion.Data.Identity
             return identityResult.ToApplicationIdentityResult();
         }
 
-        public virtual async Task<ApplicationIdentityResult> DeleteAsync(int roleId)
+        public virtual async Task<ApplicationIdentityResult> DeleteAsync(string roleId)
         {
             var identityRole = await _roleManager.FindByIdAsync(roleId);
             if (identityRole == null)
@@ -49,7 +49,7 @@ namespace ASPNETIdentityWithOnion.Data.Identity
             return identityResult.ToApplicationIdentityResult();
         }
 
-        public virtual async Task<ApplicationRole> FindByIdAsync(int roleId)
+        public virtual async Task<ApplicationRole> FindByIdAsync(string roleId)
         {
             var role = await _roleManager.FindByIdAsync(roleId).ConfigureAwait(false);
             return role.ToApplicationRole();
@@ -82,7 +82,7 @@ namespace ASPNETIdentityWithOnion.Data.Identity
             return await _roleManager.RoleExistsAsync(roleName).ConfigureAwait(false);
         }
 
-        public virtual async Task<ApplicationIdentityResult> UpdateAsync(int roleId, string roleName)
+        public virtual async Task<ApplicationIdentityResult> UpdateAsync(string roleId, string roleName)
         {
             var identityRole = await _roleManager.FindByIdAsync(roleId);
             if (identityRole == null)

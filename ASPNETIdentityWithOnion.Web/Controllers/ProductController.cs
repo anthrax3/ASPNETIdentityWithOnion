@@ -1,25 +1,25 @@
 ﻿using System.Threading.Tasks;
 using System.Web.Mvc;
 using ASPNETIdentityWithOnion.Core.DomainModels;
-using ASPNETIdentityWithOnion.Core.Services;
+using MediatR;
+using ASPNETIdentityWithOnion.Core.Query;
 
 namespace ASPNETIdentityWithOnion.Web.Controllers
 {
     public class ProductController : Controller
     {
-        private readonly IService<Product> _service;
-        private readonly int _pageSize;
+        private readonly IMediator _mediator;
 
-        public ProductController(IService<Product> service)
+        public ProductController(IMediator mediator)
         {
-            _service = service;
-            _pageSize = 10;
+            _mediator = mediator;
         }
         
-        public async Task<ActionResult> Index(int pageIndex = 1)
+        public async Task<ActionResult> Index()
         {
-            ViewBag.PageIndex = pageIndex;
-            var list = await _service.GetAllAsync(pageIndex, _pageSize);
+            var list = _mediator.Send(new GenericQuery<Product>());
+            //var test3 = _mediator.Send(new AutoMapperQuery<Product,ProductDto>());
+
             return View(list);
         }
 	}

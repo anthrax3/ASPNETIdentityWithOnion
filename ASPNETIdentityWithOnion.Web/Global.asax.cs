@@ -1,4 +1,4 @@
-﻿using ASPNETIdentityWithOnion.Web.Models;
+﻿using ASPNETIdentityWithOnion.Web.ViewModels;
 using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;

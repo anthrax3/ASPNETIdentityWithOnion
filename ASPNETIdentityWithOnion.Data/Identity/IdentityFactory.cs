@@ -8,11 +8,11 @@ namespace ASPNETIdentityWithOnion.Data.Identity
 {
     public class IdentityFactory
     {
-        public static UserManager<ApplicationIdentityUser, int> CreateUserManager(DbContext context)
+        public static UserManager<ApplicationIdentityUser, string> CreateUserManager(DbContext context)
         {
-            var manager = new UserManager<ApplicationIdentityUser, int>(new UserStore<ApplicationIdentityUser, ApplicationIdentityRole, int, ApplicationIdentityUserLogin, ApplicationIdentityUserRole, ApplicationIdentityUserClaim>(context));
+            var manager = new UserManager<ApplicationIdentityUser, string>(new UserStore<ApplicationIdentityUser, ApplicationIdentityRole, string, ApplicationIdentityUserLogin, ApplicationIdentityUserRole, ApplicationIdentityUserClaim>(context));
             // Configure validation logic for usernames
-            manager.UserValidator = new  UserValidator<ApplicationIdentityUser, int>(manager)
+            manager.UserValidator = new  UserValidator<ApplicationIdentityUser>(manager)
             {
                 AllowOnlyAlphanumericUserNames = false,
                 RequireUniqueEmail = true
@@ -32,11 +32,11 @@ namespace ASPNETIdentityWithOnion.Data.Identity
             manager.MaxFailedAccessAttemptsBeforeLockout = 5;
             // Register two factor authentication providers. This application uses Phone and Emails as a step of receiving a code for verifying the user
             // You can write your own provider and plug in here.
-            manager.RegisterTwoFactorProvider("PhoneCode", new PhoneNumberTokenProvider<ApplicationIdentityUser, int>
+            manager.RegisterTwoFactorProvider("PhoneCode", new PhoneNumberTokenProvider<ApplicationIdentityUser>
             {
                 MessageFormat = "Your security code is: {0}"
             });
-            manager.RegisterTwoFactorProvider("EmailCode", new EmailTokenProvider<ApplicationIdentityUser, int>
+            manager.RegisterTwoFactorProvider("EmailCode", new EmailTokenProvider<ApplicationIdentityUser>
             {
                 Subject = "SecurityCode",
                 BodyFormat = "Your security code is {0}"
@@ -46,9 +46,9 @@ namespace ASPNETIdentityWithOnion.Data.Identity
             return manager;
         }
 
-        public static RoleManager<ApplicationIdentityRole, int> CreateRoleManager(DbContext context)
+        public static RoleManager<ApplicationIdentityRole, string> CreateRoleManager(DbContext context)
         {
-            return new RoleManager<ApplicationIdentityRole, int>(new RoleStore<ApplicationIdentityRole, int, ApplicationIdentityUserRole>(context));
+            return new RoleManager<ApplicationIdentityRole, string>(new RoleStore<ApplicationIdentityRole, string, ApplicationIdentityUserRole>(context));
         }
     }
 }

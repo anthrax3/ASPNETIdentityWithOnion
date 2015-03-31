@@ -1,4 +1,4 @@
-@model ASPNETIdentityWithOnion.Web.Models.LoginViewModel
+@model ASPNETIdentityWithOnion.Web.ViewModels.LoginViewModel
 
 @{
     ViewBag.Title = "Log in";
@@ -51,7 +51,7 @@
     </div>
     <div class="col-md-4">
         <section id="socialLoginForm">
-            @Html.Partial("_ExternalLoginsListPartial", new ASPNETIdentityWithOnion.Web.Models.ExternalLoginListViewModel { ReturnUrl = ViewBag.ReturnUrl, LoginProviders = ViewBag.LoginProviders })
+            @Html.Partial("_ExternalLoginsListPartial", new ASPNETIdentityWithOnion.Web.ViewModels.ExternalLoginListViewModel { ReturnUrl = ViewBag.ReturnUrl, LoginProviders = ViewBag.LoginProviders })
         </section>
     </div>
 </div>

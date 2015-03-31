@@ -1,4 +1,4 @@
-﻿using ASPNETIdentityWithOnion.Web.Models;
+﻿using ASPNETIdentityWithOnion.Web.ViewModels;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
@@ -29,13 +29,13 @@ namespace ASPNETIdentityWithOnion.Web.Controllers
 
         //
         // GET: /Roles/Details/5
-        public async Task<ActionResult> Details(int? id)
+        public async Task<ActionResult> Details(string id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            var role = await _roleManager.FindByIdAsync(id.Value);
+            var role = await _roleManager.FindByIdAsync(id);
             if (role == null)
             {
                 return HttpNotFound();
@@ -85,13 +85,13 @@ namespace ASPNETIdentityWithOnion.Web.Controllers
 
         //
         // GET: /Roles/Edit/Admin
-        public async Task<ActionResult> Edit(int? id)
+        public async Task<ActionResult> Edit(string id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            var role = await _roleManager.FindByIdAsync(id.Value);
+            var role = await _roleManager.FindByIdAsync(id);
             if (role == null)
             {
                 return HttpNotFound();
@@ -117,13 +117,13 @@ namespace ASPNETIdentityWithOnion.Web.Controllers
 
         //
         // GET: /Roles/Delete/5
-        public async Task<ActionResult> Delete(int? id)
+        public async Task<ActionResult> Delete(string id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            var role = await _roleManager.FindByIdAsync(id.Value);
+            var role = await _roleManager.FindByIdAsync(id);
             if (role == null)
             {
                 return HttpNotFound();
@@ -135,7 +135,7 @@ namespace ASPNETIdentityWithOnion.Web.Controllers
         // POST: /Roles/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> DeleteConfirmed(int? id, string deleteUser)
+        public async Task<ActionResult> DeleteConfirmed(string id, string deleteUser)
         {
             if (ModelState.IsValid)
             {
@@ -146,11 +146,11 @@ namespace ASPNETIdentityWithOnion.Web.Controllers
                 ApplicationIdentityResult result;
                 if (deleteUser != null)
                 {
-                    result = await _roleManager.DeleteAsync(id.Value);
+                    result = await _roleManager.DeleteAsync(id);
                 }
                 else
                 {
-                    result = await _roleManager.DeleteAsync(id.Value);
+                    result = await _roleManager.DeleteAsync(id);
                 }
                 if (!result.Succeeded)
                 {

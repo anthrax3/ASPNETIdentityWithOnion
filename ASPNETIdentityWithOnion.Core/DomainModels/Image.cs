@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace ASPNETIdentityWithOnion.Core.DomainModels
 {
@@ -6,6 +7,7 @@ namespace ASPNETIdentityWithOnion.Core.DomainModels
     {
         public Image()
         {
+            this.Id = Guid.NewGuid().ToString();
             Products = new HashSet<Product>();
         }
 

@@ -1,5 +1,5 @@
 ﻿using ASPNETIdentityWithOnion.Core.DomainModels.Identity;
-using ASPNETIdentityWithOnion.Web.Models;
+using ASPNETIdentityWithOnion.Web.ViewModels;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
@@ -28,13 +28,13 @@ namespace ASPNETIdentityWithOnion.Web.Controllers
 
         //
         // GET: /Users/Details/5
-        public async Task<ActionResult> Details(int? id)
+        public async Task<ActionResult> Details(string id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            var user = await _userManager.FindByIdAsync(id.Value);
+            var user = await _userManager.FindByIdAsync(id);
             if (user == null)
             {
                 return HttpNotFound();
@@ -92,13 +92,13 @@ namespace ASPNETIdentityWithOnion.Web.Controllers
 
         //
         // GET: /Users/Edit/1
-        public async Task<ActionResult> Edit(int? id)
+        public async Task<ActionResult> Edit(string id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            var user = await _userManager.FindByIdAsync(id.Value);
+            var user = await _userManager.FindByIdAsync(id);
             if (user == null)
             {
                 return HttpNotFound();
@@ -162,13 +162,13 @@ namespace ASPNETIdentityWithOnion.Web.Controllers
 
         //
         // GET: /Users/Delete/5
-        public async Task<ActionResult> Delete(int? id)
+        public async Task<ActionResult> Delete(string id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            var user = await _userManager.FindByIdAsync(id.Value);
+            var user = await _userManager.FindByIdAsync(id);
             if (user == null)
             {
                 return HttpNotFound();
@@ -180,7 +180,7 @@ namespace ASPNETIdentityWithOnion.Web.Controllers
         // POST: /Users/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> DeleteConfirmed(int? id)
+        public async Task<ActionResult> DeleteConfirmed(string id)
         {
             if (ModelState.IsValid)
             {
@@ -188,7 +188,7 @@ namespace ASPNETIdentityWithOnion.Web.Controllers
                 {
                     return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
                 }
-                var result = await _userManager.DeleteAsync(id.Value);
+                var result = await _userManager.DeleteAsync(id);
                 if (result.Errors.Contains("Invalid user Id"))
                 {
                     return HttpNotFound();

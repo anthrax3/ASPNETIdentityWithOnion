@@ -134,7 +134,7 @@ namespace ASPNETIdentityWithOnion.Data.Extensions
             return appUser;
         }
 
-        public static ApplicationUserRole ToApplicationUserRole(this IdentityUserRole<int> role)
+        public static ApplicationUserRole ToApplicationUserRole(this IdentityUserRole<string> role)
         {
             return role == null ? null : new ApplicationUserRole { RoleId = role.RoleId, UserId = role.UserId };
         }
@@ -282,12 +282,12 @@ namespace ASPNETIdentityWithOnion.Data.Extensions
             return list.Select(u => u.ToAuthenticationDescription()).ToList();
         }
 
-        public static IEnumerable<ApplicationUserRole> ToApplicationUserRoleList(this IEnumerable<IdentityUserRole<int>> list)
+        public static IEnumerable<ApplicationUserRole> ToApplicationUserRoleList(this IEnumerable<IdentityUserRole<string>> list)
         {
             return list.Select(u => u.ToApplicationUserRole()).ToList();
         }
 
-        public static IEnumerable<IdentityUserRole<int>> ToIdentityUserRoleList(this IEnumerable<ApplicationUserRole> list)
+        public static IEnumerable<IdentityUserRole<string>> ToIdentityUserRoleList(this IEnumerable<ApplicationUserRole> list)
         {
             return list.Select(u => u.ToIdentityUserRole()).ToList();
         }

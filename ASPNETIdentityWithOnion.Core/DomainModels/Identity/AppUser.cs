@@ -10,12 +10,13 @@ namespace ASPNETIdentityWithOnion.Core.DomainModels.Identity
             Claims = new List<ApplicationUserClaim>();
             Roles = new List<ApplicationUserRole>();
             Logins = new List<ApplicationUserLogin>();
+            Id = Guid.NewGuid().ToString();
         }
         public virtual int AccessFailedCount { get; set; }
         public virtual ICollection<ApplicationUserClaim> Claims { get; private set; }
         public virtual string Email { get; set; }
         public virtual bool EmailConfirmed { get; set; }
-        public virtual int Id { get; set; }
+        public virtual string Id { get; set; }
         public virtual bool LockoutEnabled { get; set; }
         public virtual DateTime? LockoutEndDateUtc { get; set; }
         public virtual ICollection<ApplicationUserLogin> Logins { get; private set; }

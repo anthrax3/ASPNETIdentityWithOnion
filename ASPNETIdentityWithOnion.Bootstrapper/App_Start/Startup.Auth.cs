@@ -24,10 +24,10 @@ namespace ASPNETIdentityWithOnion.Bootstrapper
                 Provider = new CookieAuthenticationProvider {
                     // Enables the application to validate the security stamp when the user logs in.
                     // This is a security feature which is used when you change a password or add an external login to your account.  
-                    OnValidateIdentity = SecurityStampValidator.OnValidateIdentity<UserManager<ApplicationIdentityUser, int>, ApplicationIdentityUser, int>(
+                    OnValidateIdentity = SecurityStampValidator.OnValidateIdentity<UserManager<ApplicationIdentityUser, string>, ApplicationIdentityUser, string>(
                         validateInterval: TimeSpan.FromMinutes(30),
                         regenerateIdentityCallback: (manager, user) => manager.CreateIdentityAsync(user, DefaultAuthenticationTypes.ApplicationCookie),
-                        getUserIdCallback: (user) => int.Parse(user.GetUserId())
+                        getUserIdCallback: (user) => user.GetUserId()
                 )}
             });
             app.UseExternalSignInCookie(DefaultAuthenticationTypes.ExternalCookie);
